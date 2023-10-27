@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Agriculture</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/agriculture-icon.png" rel="icon">
+    <link href="assets/img/ttitle.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <style>
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('hbg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #093354;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#options button:hover {
+    background-color: #4d9abb;
+}
+
+#next-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-button:hover {
+    background-color: #219f53;
+}
+
+#result {
+    font-size: 24px;
+    color: #333;
+    display: none;
+    animation: fade-in 1s;
+    margin-top: 20px;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <header id="header" class="header fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            
+        </div>
+    </header>
+    <div id="quiz-container">
+        <h1>Agriculture</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-button">Next</button>
+        <div id="result" style="display: none;">
+            <h2>Recommended Agriculture Career</h2>
+            <p id="career-description"></p>
+            <h3>Steps to Pursue This Career</h3>
+            <ul id="career-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What aspect of agriculture interests you the most?",
+                options: ["Working with nature", "Working with animals", "Business and management", "Research and innovation"],
+            },
+            {
+                question: "Do you prefer hands-on work or desk-based tasks?",
+                options: ["Hands-on work", "Desk-based tasks", "A mix of both"],
+            },
+            {
+                question: "Are you more inclined towards practical problem-solving or data analysis?",
+                options: ["Practical problem-solving", "Data analysis", "Both equally"],
+            },
+            {
+                question: "Do you have a strong interest in sustainability and eco-friendliness?",
+                options: ["Yes", "No"],
+            },
+        ]
+
+        const results = {
+            "Working with nature_Hands-on work_Practical problem-solving_Yes": "Agronomist",
+            "Working with nature_Hands-on work_Data analysis_Yes": "Organic Farm Manager",
+            "Working with nature_Desk-based tasks_Both equally_Yes": "Agricultural Consultant",
+            "Working with animals_Hands-on work_Practical problem-solving_Yes": "Livestock Nutritionist",
+            "Working with animals_Hands-on work_Data analysis_Yes": "Veterinarian",
+            "Working with animals_Desk-based tasks_Both equally_Yes": "Animal Health Researcher",
+            "Business and management_Hands-on work_Practical problem-solving_Yes": "Farm Manager",
+            "Business and management_Hands-on work_Data analysis_Yes": "Agricultural Economist",
+            "Business and management_Desk-based tasks_Both equally_Yes": "Agricultural Business Analyst",
+            "Research and innovation_Hands-on work_Practical problem-solving_Yes": "Biotechnologist",
+            "Research and innovation_Hands-on work_Data analysis_Yes": "Agricultural Research Scientist",
+            "Research and innovation_Desk-based tasks_Both equally_Yes": "Agricultural Technology Innovator",
+            "Default": "Career recommendation not found for your choices"
+        };
+
+        const careerInfo = {
+            "Agronomist": {
+                description: "Agronomists study plants and soil to develop sustainable and productive farming practices.",
+                steps: [
+                    "Earn a degree in Agronomy or related field.",
+                    "Gain field experience in crop management and soil science.",
+                    "Stay updated with modern agronomic techniques.",
+                ],
+            },
+            "Organic Farm Manager": {
+                description: "Organic Farm Managers oversee eco-friendly farming practices and organic crop production.",
+                steps: [
+                    "Obtain a degree in Organic Agriculture or a related field.",
+                    "Manage and work on an organic farm to gain experience.",
+                    "Stay committed to organic and sustainable farming methods.",
+                ],
+            },
+            "Agricultural Consultant": {
+                description: "Agricultural Consultants offer expert advice to farmers and agribusinesses on improving productivity and sustainability.",
+                steps: [
+                    "Obtain a degree in Agricultural Science or related field.",
+                    "Build a network within the agricultural industry.",
+                    "Provide consultation services and stay updated with industry trends.",
+                ],
+            },
+            "Livestock Nutritionist": {
+                description: "Livestock Nutritionists develop animal diets to ensure the health and productivity of farm animals.",
+                steps: [
+                    "Earn a degree in Animal Science or Nutrition.",
+                    "Work with livestock and gain experience in animal nutrition.",
+                    "Stay informed about animal health and nutrition practices.",
+                ],
+            },
+            "Veterinarian": {
+                description: "Veterinarians diagnose and treat illnesses and injuries in animals, including farm animals.",
+                steps: [
+                    "Complete a Doctor of Veterinary Medicine (DVM) degree.",
+                    "Obtain a veterinary license and gain experience in animal care.",
+                    "Work in both clinical and farm settings.",
+                ],
+            },
+            "Animal Health Researcher": {
+                description: "Animal Health Researchers conduct studies on improving animal health and well-being.",
+                steps: [
+                    "Earn a degree in Veterinary Science or Animal Health.",
+                    "Participate in research projects related to animal health.",
+                    "Publish research findings and contribute to animal science.",
+                ],
+            },
+            "Farm Manager": {
+                description: "Farm Managers oversee all aspects of farm operations, including crop cultivation and livestock management.",
+                steps: [
+                    "Obtain a degree in Farm Management or related field.",
+                    "Gain practical experience in managing a farm.",
+                    "Maintain the efficiency and profitability of the farm.",
+                ],
+            },
+            "Agricultural Economist": {
+                description: "Agricultural Economists analyze economic trends in agriculture and make recommendations for improved business practices.",
+                steps: [
+                    "Earn a degree in Agricultural Economics or Economics.",
+                    "Analyze economic data and trends in the agriculture sector.",
+                    "Provide economic advice to farmers and agribusinesses.",
+                ],
+            },
+            "Agricultural Business Analyst": {
+                description: "Agricultural Business Analysts focus on analyzing and improving business operations in agriculture.",
+                steps: [
+                    "Obtain a degree in Business or Agricultural Business Management.",
+                    "Analyze and optimize business processes in the agriculture industry.",
+                    "Contribute to business growth and sustainability.",
+                ],
+            },
+            "Biotechnologist": {
+                description: "Biotechnologists use biotechnology to develop innovative solutions for agriculture.",
+                steps: [
+                    "Earn a degree in Biotechnology or related field.",
+                    "Work on biotechnology projects in agriculture.",
+                    "Contribute to advancements in agricultural technology.",
+                ],
+            },
+            "Agricultural Research Scientist": {
+                description: "Agricultural Research Scientists conduct research to improve agricultural practices and technologies.",
+                steps: [
+                    "Obtain a degree in Agricultural Science or a related field.",
+                    "Engage in research projects related to agriculture.",
+                    "Publish research findings and contribute to the field.",
+                ],
+            },
+            "Agricultural Technology Innovator": {
+                description: "Agricultural Technology Innovators focus on developing and implementing cutting-edge agricultural technologies.",
+                steps: [
+                    "Earn a degree in Agricultural Technology or related field.",
+                    "Innovate and implement technology solutions in agriculture.",
+                    "Contribute to the advancement of agricultural technology.",
+                ],
+            },
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const questionContainer = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const resultContainer = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                questionContainer.textContent = questions[currentQuestion].question;
+                optionsContainer.innerHTML = "";
+
+                for (const option of questions[currentQuestion].options) {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.addEventListener("click", () => selectOption(option));
+                    optionsContainer.appendChild(button);
+                }
+            } else {
+                showResult();
+            }
+        }
+
+        function selectOption(option) {
+            answers.push(option);
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showResult() {
+            const answerKey = answers.join("_");
+            const recommendedCareer = results[answerKey] || results["Default"];
+            resultContainer.style.display = "block";
+            optionsContainer.style.display = "none";
+            nextButton.style.display = "none";
+
+            const careerDescription = careerInfo[recommendedCareer];
+            if (careerDescription) {
+                document.getElementById("career-description").textContent = careerDescription.description;
+
+                const stepsList = document.getElementById("career-steps");
+                stepsList.innerHTML = "";
+                for (const step of careerDescription.steps) {
+                    const stepItem = document.createElement("li");
+                    stepItem.textContent = step;
+                    stepsList.appendChild(stepItem);
+                }
+            } else {
+                document.getElementById("career-description").textContent = "Career information not available.";
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
+

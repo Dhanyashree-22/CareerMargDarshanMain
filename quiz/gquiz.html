@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Government&PublicAdnimistration</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/agriculture-icon.png" rel="icon">
+    <link href="assets/img/ttitle.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <style>
+        
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('hbg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #093354;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#options button:hover {
+    background-color: #4d9abb;
+}
+
+#next-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-button:hover {
+    background-color: #219f53;
+}
+
+#result {
+    font-size: 24px;
+    color: #333;
+    display: none;
+    animation: fade-in 1s;
+    margin-top: 20px;
+}
+
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Government and Public Administration</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-button">Next</button>
+        <div id="result" style="display: none;">
+            <h2>Recommended Career</h2>
+            <p id="career-description"></p>
+            <h3>Steps to Pursue This Career (India)</h3>
+            <ul id="career-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What interests you more?",
+                options: ["Public Policy", "Law", "Public Administration", "Diplomacy"],
+            },
+            {
+                question: "Do you prefer working in a government setting?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "What level of education are you willing to pursue?",
+                options: ["Bachelor's Degree", "Master's Degree", "Doctorate"],
+            },
+            {
+                question: "Are you interested in international relations?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Do you want to be involved in legal matters?",
+                options: ["Yes", "No"],
+            }
+        ]
+
+        const results = {
+            "Public Policy_Yes_Bachelor's Degree_No_": "Public Policy Analyst",
+            "Law_Yes_Bachelor's Degree_Yes": "Government Lawyer",
+            "Public Administration_Yes_Master's Degree_No": "Public Administrator",
+            "Diplomacy_Yes_Master's Degree_Yes": "Diplomat",
+            "Default": "Career recommendation not found for your choices"
+        };
+
+        const careerInfo = {
+            "Public Policy Analyst": {
+                description: "Public Policy Analysts work to shape public policy by analyzing data and providing recommendations for effective policies.",
+                steps: [
+                    "Earn a Bachelor's Degree in Public Policy or related field.",
+                    "Gain practical experience through internships or entry-level positions in government or think tanks.",
+                    "Consider pursuing a Master's degree for advanced roles.",
+                ],
+            },
+            "Government Lawyer": {
+                description: "Government Lawyers represent the government in legal matters. They work for various government agencies and departments.",
+                steps: [
+                    "Obtain a Bachelor of Laws (LLB) degree.",
+                    "Pass the bar exam and become a licensed lawyer.",
+                    "Apply for government lawyer positions and gain experience.",
+                ],
+            },
+            "Public Administrator": {
+                description: "Public Administrators oversee and manage government programs and operations. They play a key role in ensuring effective public service delivery.",
+                steps: [
+                    "Complete a Master's Degree in Public Administration (MPA) or related field.",
+                    "Gain practical experience through internships or government positions.",
+                    "Consider additional certifications for career advancement.",
+                ],
+            },
+            "Diplomat": {
+                description: "Diplomats represent their country's interests in international relations. They work in embassies and consulates around the world.",
+                steps: [
+                    "Earn a Master's Degree in International Relations or Diplomacy.",
+                    "Join the Indian Foreign Service (IFS) through competitive exams or apply for diplomatic positions.",
+                    "Undergo diplomatic training and language courses as needed.",
+                ],
+            },
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const questionContainer = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const resultContainer = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                questionContainer.textContent = questions[currentQuestion].question;
+                optionsContainer.innerHTML = "";
+
+                for (const option of questions[currentQuestion].options) {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.addEventListener("click", () => selectOption(option));
+                    optionsContainer.appendChild(button);
+                }
+            } else {
+                showResult();
+            }
+        }
+
+        function selectOption(option) {
+            answers.push(option);
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showResult() {
+            const answerKey = answers.join("_");
+            const recommendedCareer = results[answerKey] || results["Default"];
+            resultContainer.style.display = "block";
+            optionsContainer.style.display = "none";
+            nextButton.style.display = "none";
+
+            const careerDescription = careerInfo[recommendedCareer];
+            if (careerDescription) {
+                document.getElementById("career-description").textContent = careerDescription.description;
+
+                const stepsList = document.getElementById("career-steps");
+                stepsList.innerHTML = "";
+                for (const step of careerDescription.steps) {
+                    const stepItem = document.createElement("li");
+                    stepItem.textContent = step;
+                    stepsList.appendChild(stepItem);
+                }
+            } else {
+                document.getElementById("career-description").textContent = "Career information not available.";
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Education</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/agriculture-icon.png" rel="icon">
+    <link href="assets/img/ttitle.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <style>
+        
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('hbg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #093354;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#options button:hover {
+    background-color: #4d9abb;
+}
+
+#next-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-button:hover {
+    background-color: #219f53;
+}
+
+#result {
+    font-size: 24px;
+    color: #333;
+    display: none;
+    animation: fade-in 1s;
+    margin-top: 20px;
+}
+
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <header id="header" class="header fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+        </div>
+    </header>
+    <div id="quiz-container">
+        <h1>Education(Teaching)</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-button">Next</button>
+        <div id="result" style="display: none;">
+            <h2>Recommended Teaching Career</h2>
+            <p id="career-description"></p>
+            <h3>Steps to Pursue This Career</h3>
+            <ul id="career-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What type of teaching environment do you envision?",
+                options: ["Classroom", "Online", "Flexible"],
+            },
+            {
+                question: "Do you prefer working with young learners or adults?",
+                options: ["Young learners", "Adults", "All age groups"],
+            },
+            {
+                question: "Are you interested in a specific subject or open to teaching various subjects?",
+                options: ["Specific subject", "Variety of subjects"],
+            },
+            {
+                question: "Are you passionate about fostering creativity and critical thinking?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Would you like to be involved in educational leadership and policy-making?",
+                options: ["Yes", "No"],
+            },
+            // Additional questions:
+            {
+                question: "Do you enjoy facilitating group discussions and collaboration?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Are you open to teaching in multicultural and diverse environments?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Do you have a preference for a structured curriculum or more creative teaching methods?",
+                options: ["Structured curriculum", "Creative teaching methods", "A mix of both"],
+            }
+        ]
+
+        const results = {
+            "Classroom_Young learners_Specific subject_Yes_Yes_Yes_Yes_Structured curriculum": "Elementary School Teacher",
+            "Online_Adults_Variety of subjects_Yes_No_Yes_No_Structured curriculum": "Online Tutor",
+            "Flexible_All age groups_Variety of subjects_Yes_No_Yes_No_A mix of both": "Education Consultant",
+            "Classroom_Young learners_Variety of subjects_Yes_Yes_Yes_No_Creative teaching methods": "Preschool Teacher",
+            "Classroom_Adults_Specific subject_Yes_Yes_Yes_Yes_Creative teaching methods": "Adult Education Instructor",
+            "Default": "Career recommendation not found for your choices"
+        };
+
+        const careerInfo = {
+            "Elementary School Teacher": {
+                description: "Elementary School Teachers educate young students and help develop fundamental skills and knowledge.",
+                steps: [
+                    "Earn a Bachelor's degree in Education.",
+                    "Complete student teaching experience.",
+                    "Obtain teaching certification and licensure.",
+                ],
+            },
+            "Online Tutor": {
+                description: "Online Tutors provide one-on-one or group instruction to students in various subjects using digital platforms.",
+                steps: [
+                    "Obtain relevant qualifications in your subject area.",
+                    "Build an online teaching presence through tutoring websites or your platform.",
+                    "Adapt to the online learning environment and technologies.",
+                ],
+            },
+            "Education Consultant": {
+                description: "Education Consultants offer expertise and advice to educational institutions, policymakers, and educators.",
+                steps: [
+                    "Earn a Master's or Ph.D. in Education or related field.",
+                    "Build a network within the education industry.",
+                    "Contribute to educational policy and curriculum development.",
+                ],
+            },
+            // Additional career recommendations:
+            "Preschool Teacher": {
+                description: "Preschool Teachers work with young children to develop foundational social and academic skills through creative teaching methods.",
+                steps: [
+                    "Earn an Early Childhood Education degree.",
+                    "Plan and execute creative and age-appropriate activities.",
+                    "Obtain necessary teaching certifications.",
+                ],
+            },
+            "Adult Education Instructor": {
+                description: "Adult Education Instructors teach adults and help them acquire new skills or further their education.",
+                steps: [
+                    "Earn a degree in Adult Education or a related field.",
+                    "Design and deliver engaging adult education programs.",
+                    "Stay updated with adult learning principles.",
+                ],
+            },
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const questionContainer = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const resultContainer = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                questionContainer.textContent = questions[currentQuestion].question;
+                optionsContainer.innerHTML = "";
+
+                for (const option of questions[currentQuestion].options) {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.addEventListener("click", () => selectOption(option));
+                    optionsContainer.appendChild(button);
+                }
+            } else {
+                showResult();
+            }
+        }
+
+        function selectOption(option) {
+            answers.push(option);
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showResult() {
+            const answerKey = answers.join("_");
+            const recommendedCareer = results[answerKey] || results["Default"];
+            resultContainer.style.display = "block";
+            optionsContainer.style.display = "none";
+            nextButton.style.display = "none";
+
+            const careerDescription = careerInfo[recommendedCareer];
+            if (careerDescription) {
+                document.getElementById("career-description").textContent = careerDescription.description;
+
+                const stepsList = document.getElementById("career-steps");
+                stepsList.innerHTML = "";
+                for (const step of careerDescription.steps) {
+                    const stepItem = document.createElement("li");
+                    stepItem.textContent = step;
+                    stepsList.appendChild(stepItem);
+                }
+            } else {
+                document.getElementById("career-description").textContent = "Career information not available.";
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>

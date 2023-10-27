@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>STEM</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/agriculture-icon.png" rel="icon">
+    <link href="assets/img/ttitle.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <style>
+     
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('hbg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #093354;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#options button:hover {
+    background-color: #4d9abb;
+}
+
+#next-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-button:hover {
+    background-color: #219f53;
+}
+
+#result {
+    font-size: 24px;
+    color: #333;
+    display: none;
+    animation: fade-in 1s;
+    margin-top: 20px;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Technology</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-button">Next</button>
+        <div id="result" style="display: none;">
+            <h2>Recommended Career</h2>
+            <p id="career-description"></p>
+            <h3>Steps to Pursue This Career (India)</h3>
+            <ul id="career-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What area of IT interests you more?",
+                options: ["Software Development", "Data Science and Analytics", "Cybersecurity", "Network Administration"],
+            },
+            {
+                question: "Do you enjoy working with data and solving complex problems?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Are you interested in protecting digital assets and information?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Do you prefer working on software applications and coding?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Do you like managing and maintaining network infrastructure?",
+                options: ["Yes", "No"],
+            }
+        ]
+
+        const results = {
+            "Software Development_Yes_No_Yes_No": "Software Developer",
+            "Data Science and Analytics_Yes_No_No_No": "Data Analyst",
+            "Cybersecurity_Yes_No_No_Yes": "Cybersecurity Analyst",
+            "Network Administration_Yes_Yes_No_No": "Network Administrator",
+            "Default": "Career recommendation not found for your choices"
+        };
+
+        const careerInfo = {
+            "Software Developer": {
+                description: "Software Developers create and maintain software applications, including web and mobile apps.",
+                steps: [
+                    "Earn a Bachelor's Degree in Computer Science or a related field.",
+                    "Build a strong portfolio of coding projects.",
+                    "Stay updated with the latest programming languages and technologies.",
+                ],
+            },
+            "Data Analyst": {
+                description: "Data Analysts collect, analyze, and interpret data to help organizations make data-driven decisions.",
+                steps: [
+                    "Obtain a Bachelor's Degree in Data Science, Statistics, or a related field.",
+                    "Gain proficiency in data analysis tools and languages like Python and SQL.",
+                    "Acquire relevant certifications for career advancement.",
+                ],
+            },
+            "Cybersecurity Analyst": {
+                description: "Cybersecurity Analysts protect an organization's digital assets and information from cyber threats.",
+                steps: [
+                    "Complete a Bachelor's Degree in Cybersecurity, Information Technology, or a related field.",
+                    "Develop expertise in cybersecurity tools and best practices.",
+                    "Obtain industry-recognized certifications like CISSP or CompTIA Security+.",
+                ],
+            },
+            "Network Administrator": {
+                description: "Network Administrators manage and maintain an organization's network infrastructure, ensuring its smooth operation.",
+                steps: [
+                    "Earn a Bachelor's Degree in Network Administration or Information Technology.",
+                    "Gain hands-on experience in network configuration and troubleshooting.",
+                    "Consider certifications like Cisco CCNA for networking professionals.",
+                ],
+            },
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const questionContainer = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const resultContainer = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                questionContainer.textContent = questions[currentQuestion].question;
+                optionsContainer.innerHTML = "";
+
+                for (const option of questions[currentQuestion].options) {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.addEventListener("click", () => selectOption(option));
+                    optionsContainer.appendChild(button);
+                }
+            } else {
+                showResult();
+            }
+        }
+
+        function selectOption(option) {
+            answers.push(option);
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showResult() {
+            const answerKey = answers.join("_");
+            const recommendedCareer = results[answerKey] || results["Default"];
+            resultContainer.style.display = "block";
+            optionsContainer.style.display = "none";
+            nextButton.style.display = "none";
+
+            const careerDescription = careerInfo[recommendedCareer];
+            if (careerDescription) {
+                document.getElementById("career-description").textContent = careerDescription.description;
+
+                const stepsList = document.getElementById("career-steps");
+                stepsList.innerHTML = "";
+                for (const step of careerDescription.steps) {
+                    const stepItem = document.createElement("li");
+                    stepItem.textContent = step;
+                    stepsList.appendChild(stepItem);
+                }
+            } else {
+                document.getElementById("career-description").textContent = "Career information not available.";
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>

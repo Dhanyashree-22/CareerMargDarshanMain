@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Art&Entertainment</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/ttitle.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <style>
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('hbg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #093354;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#options button:hover {
+    background-color: #4d9abb;
+}
+
+#next-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-button:hover {
+    background-color: #219f53;
+}
+
+#result {
+    font-size: 24px;
+    color: #333;
+    display: none;
+    animation: fade-in 1s;
+    margin-top: 20px;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <header id="header" class="header fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content between">
+        </div>
+    </header>
+    <div id="quiz-container">
+        <h1>Art and Entertainment</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-button">Next</button>
+        <div id="result" style="display: none;">
+            <h2>Recommended Career in Art and Entertainment</h2>
+            <p id="career-description"></p>
+            <h3>Steps to Pursue This Career</h3>
+            <ul id="career-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What aspect of art and entertainment interests you?",
+                options: ["Visual Arts", "Performing Arts", "Media and Production", "Creative Writing"],
+            },
+            {
+                question: "Do you enjoy expressing yourself creatively?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Are you interested in live performances or behind-the-scenes work?",
+                options: ["Live performances", "Behind-the-scenes"],
+            },
+            {
+                question: "Do you prefer a structured work environment or a more flexible one?",
+                options: ["Structured", "Flexible"],
+            },
+            {
+                question: "Are you passionate about inspiring emotions and ideas through your work?",
+                options: ["Yes", "No"],
+            }
+        ]
+
+        const results = {
+            "Visual Arts_Yes_Live performances_Structured_Yes": "Fine Artist",
+            "Performing Arts_Yes_Live performances_Structured_Yes": "Actor",
+            "Media and Production_Yes_Behind-the-scenes_Flexible_Yes": "Film Director",
+            "Creative Writing_Yes_Behind-the-scenes_Flexible_Yes": "Author",
+            "Default": "Career recommendation not found for your choices"
+        };
+
+        const careerInfo = {
+            "Fine Artist": {
+                description: "Fine Artists create visual artwork, such as paintings and sculptures, to express themselves and convey ideas.",
+                steps: [
+                    "Develop your artistic skills through practice and education.",
+                    "Build a portfolio of your work.",
+                    "Exhibit your art in galleries or online to gain exposure.",
+                ],
+            },
+            "Actor": {
+                description: "Actors perform in live theater, film, or television, bringing characters to life through their performances.",
+                steps: [
+                    "Take acting classes and gain experience in local theater.",
+                    "Audition for roles in theater, film, or TV.",
+                    "Nurture your acting abilities and continue training.",
+                ],
+            },
+            "Film Director": {
+                description: "Film Directors oversee the creative and technical aspects of filmmaking, bringing a script to life on screen.",
+                steps: [
+                    "Study film production and directing techniques.",
+                    "Create short films and gain experience on film sets.",
+                    "Collaborate with a team to produce your own films.",
+                ],
+            },
+            "Author": {
+                description: "Authors write novels, short stories, and other written content to entertain and engage readers.",
+                steps: [
+                    "Write regularly and develop your writing style.",
+                    "Edit and revise your work for quality and clarity.",
+                    "Publish your writing through traditional or self-publishing routes.",
+                ],
+            },
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const questionContainer = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const resultContainer = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                questionContainer.textContent = questions[currentQuestion].question;
+                optionsContainer.innerHTML = "";
+
+                for (const option of questions[currentQuestion].options) {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.addEventListener("click", () => selectOption(option));
+                    optionsContainer.appendChild(button);
+                }
+            } else {
+                showResult();
+            }
+        }
+
+        function selectOption(option) {
+            answers.push(option);
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showResult() {
+            const answerKey = answers.join("_");
+            const recommendedCareer = results[answerKey] || results["Default"];
+            resultContainer.style.display = "block";
+            optionsContainer.style.display = "none";
+            nextButton.style.display = "none";
+
+            const careerDescription = careerInfo[recommendedCareer];
+            if (careerDescription) {
+                document.getElementById("career-description").textContent = careerDescription.description;
+
+                const stepsList = document.getElementById("career-steps");
+                stepsList.innerHTML = "";
+                for (const step of careerDescription.steps) {
+                    const stepItem = document.createElement("li");
+                    stepItem.textContent = step;
+                    stepsList.appendChild(stepItem);
+                }
+            } else {
+                document.getElementById("career-description").textContent = "Career information not available.";
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>

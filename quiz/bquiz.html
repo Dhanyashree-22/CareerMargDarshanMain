@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Business</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/agriculture-icon.png" rel="icon">
+    <link href="assets/img/ttitle.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <style>
+        
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('hbg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #093354;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#options button:hover {
+    background-color: #4d9abb;
+}
+
+#next-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-button:hover {
+    background-color: #219f53;
+}
+
+#result {
+    font-size: 24px;
+    color: #333;
+    display: none;
+    animation: fade-in 1s;
+    margin-top: 20px;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Business</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-button">Next</button>
+        <div id="result" style="display: none;">
+            <h2>Recommended Career</h2>
+            <p id="career-description"></p>
+            <h3>Steps to Pursue This Career</h3>
+            <ul id="career-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What aspect of business interests you most?",
+                options: ["Finance", "Marketing", "Management", "Entrepreneurship"],
+            },
+            {
+                question: "Do you prefer working in a team or individually?",
+                options: ["Team", "Individual"],
+            },
+            {
+                question: "What level of education are you willing to pursue?",
+                options: ["Bachelor's Degree", "Master's Degree", "Ph.D.", "No Preference"],
+            },
+            {
+                question: "Where do you see yourself working?",
+                options: ["Corporate Office", "Startup", "Consulting Firm", "Government"],
+            },
+            {
+                question: "Are you interested in data analysis and analytics?",
+                options: ["Yes", "No"],
+            }
+        ]
+
+        const results = {
+            "Finance_Team_Bachelor's Degree_Corporate Office_Yes": "Financial Analyst",
+            "Finance_Team_Master's Degree_Corporate Office_Yes": "Investment Banker",
+            "Finance_Team_Bachelor's Degree_Corporate Office_No": "Accountant",
+            "Marketing_Team_Bachelor's Degree_Corporate Office_Yes": "Marketing Manager",
+            "Marketing_Team_Bachelor's Degree_Corporate Office_No": "Digital Marketing Specialist",
+            "Marketing_Individual_Bachelor's Degree_Corporate Office_Yes": "Sales Manager",
+            "Management_Team_Bachelor's Degree_Corporate Office_Yes": "Business Manager",
+            "Management_Team_Master's Degree_Corporate Office_Yes": "Management Consultant",
+            "Entrepreneurship_Team_Bachelor's Degree_Startup_Yes": "Startup Founder",
+            "Entrepreneurship_Team_Bachelor's Degree_Startup_No": "Startup Operations Manager",
+            "Default": "Career recommendation not found for your choices"
+        };
+
+        const careerInfo = {
+            "Financial Analyst": {
+                description: "Financial analysts assess financial data and trends to guide investment decisions. They work in corporate finance or investment firms.",
+                steps: [
+                    "Earn a Bachelor's Degree in Finance or related field.",
+                    "Consider obtaining relevant certifications like Chartered Financial Analyst (CFA).",
+                    "Gain experience through internships or entry-level positions.",
+                ],
+            },
+            "Marketing Manager": {
+                description: "Marketing managers plan and execute marketing strategies to promote products or services.",
+                steps: [
+                    "Complete a Bachelor's Degree in Marketing or Business.",
+                    "Gain experience in marketing through internships and entry-level positions.",
+                    "Consider pursuing a Master's Degree for career advancement.",
+                ],
+            },
+            "Business Manager": {
+                description: "Business managers oversee the daily operations of a company or department. They are responsible for strategic planning and decision-making.",
+                steps: [
+                    "Earn a Bachelor's Degree in Business or related field.",
+                    "Obtain experience in management roles through internships or entry-level jobs.",
+                    "Consider an MBA for further career growth.",
+                ],
+            },
+            "Startup Founder": {
+                description: "Startup founders create and manage their own companies. They need a combination of entrepreneurial spirit and business acumen.",
+                steps: [
+                    "Develop a business idea and create a business plan.",
+                    "Secure funding and resources for your startup.",
+                    "Build a team and start and grow your business.",
+                ],
+            },
+            // Add descriptions and steps for other careers
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const questionContainer = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const resultContainer = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                questionContainer.textContent = questions[currentQuestion].question;
+                optionsContainer.innerHTML = "";
+
+                for (const option of questions[currentQuestion].options) {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.addEventListener("click", () => selectOption(option));
+                    optionsContainer.appendChild(button);
+                }
+            } else {
+                showResult();
+            }
+        }
+
+        function selectOption(option) {
+            answers.push(option);
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showResult() {
+            const answerKey = answers.join("_");
+            const recommendedCareer = results[answerKey] || results["Default"];
+            resultContainer.style.display = "block";
+            optionsContainer.style.display = "none";
+            nextButton.style.display = "none";
+
+            const careerDescription = careerInfo[recommendedCareer];
+            if (careerDescription) {
+                document.getElementById("career-description").textContent = careerDescription.description;
+
+                const stepsList = document.getElementById("career-steps");
+                stepsList.innerHTML = "";
+                for (const step of careerDescription.steps) {
+                    const stepItem = document.createElement("li");
+                    stepItem.textContent = step;
+                    stepsList.appendChild(stepItem);
+                }
+            } else {
+                document.getElementById("career-description").textContent = "Career information not available.";
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>

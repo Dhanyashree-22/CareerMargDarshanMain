@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Sports</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="assets/img/agriculture-icon.png" rel="icon">
+    <link href="assets/img/ttitle.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <style>
+    
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('hbg.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #093354;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#options button:hover {
+    background-color: #4d9abb;
+}
+
+#next-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-button:hover {
+    background-color: #219f53;
+}
+
+#result {
+    font-size: 24px;
+    color: #333;
+    display: none;
+    animation: fade-in 1s;
+    margin-top: 20px;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Sports</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-button">Next</button>
+        <div id="result" style="display: none;">
+            <h2>Recommended Career in Sports</h2>
+            <p id="career-description"></p>
+            <h3>Steps to Pursue This Career</h3>
+            <ul id="career-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What aspect of sports interests you the most?",
+                options: ["Playing and Competing", "Coaching and Training", "Sports Medicine and Health", "Sports Management"],
+            },
+            {
+                question: "Do you enjoy physical activity and being part of a team?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Are you interested in helping athletes improve their skills and performance?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Do you have an interest in the health and well-being of athletes?",
+                options: ["Yes", "No"],
+            },
+            {
+                question: "Are you passionate about the business and organizational side of sports?",
+                options: ["Yes", "No"],
+            }
+        ];
+
+        const results = {
+            "Playing and Competing_Yes_No_No_No": "Professional Athlete",
+            "Coaching and Training_Yes_Yes_No_No": "Sports Coach",
+            "Sports Medicine and Health_Yes_No_Yes_No": "Sports Physician",
+            "Sports Management_Yes_No_No_Yes": "Sports Manager",
+            "Default": "Career recommendation not found for your choices"
+        };
+
+        const careerInfo = {
+            "Professional Athlete": {
+                description: "Professional Athletes compete in sports at the highest level and participate in various athletic events.",
+                steps: [
+                    "Pursue excellence in your chosen sport through rigorous training.",
+                    "Participate in competitions and aim for professional contracts.",
+                    "Maintain peak physical condition and seek endorsements for income.",
+                ],
+            },
+            "Sports Coach": {
+                description: "Sports Coaches instruct and train athletes to improve their skills, strategies, and overall performance.",
+                steps: [
+                    "Gain experience through coaching at various levels.",
+                    "Earn coaching certifications and relevant qualifications.",
+                    "Create a coaching philosophy and adapt to different sports.",
+                ],
+            },
+            "Sports Physician": {
+                description: "Sports Physicians diagnose and treat sports-related injuries and health issues in athletes.",
+                steps: [
+                    "Complete medical school and obtain a medical degree.",
+                    "Specialize in sports medicine and gain experience.",
+                    "Work with sports teams or athletes to provide medical care.",
+                ],
+            },
+            "Sports Manager": {
+                description: "Sports Managers oversee the business, marketing, and operational aspects of sports organizations and teams.",
+                steps: [
+                    "Earn a degree in sports management or related field.",
+                    "Gain experience in sports management roles.",
+                    "Manage the business and marketing aspects of sports teams or organizations.",
+                ],
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const questionContainer = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const resultContainer = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                questionContainer.textContent = questions[currentQuestion].question;
+                optionsContainer.innerHTML = "";
+
+                for (const option of questions[currentQuestion].options) {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.addEventListener("click", () => selectOption(option));
+                    optionsContainer.appendChild(button);
+                }
+            } else {
+                showResult();
+            }
+        }
+
+        function selectOption(option) {
+            answers.push(option);
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showResult() {
+            const answerKey = answers.join("_");
+            const recommendedCareer = results[answerKey] || results["Default"];
+            resultContainer.style.display = "block";
+            optionsContainer.style.display = "none";
+            nextButton.style.display = "none";
+
+            const careerDescription = careerInfo[recommendedCareer];
+            if (careerDescription) {
+                document.getElementById("career-description").textContent = careerDescription.description;
+
+                const stepsList = document.getElementById("career-steps");
+                stepsList.innerHTML = "";
+                for (const step of careerDescription.steps) {
+                    const stepItem = document.createElement("li");
+                    stepItem.textContent = step;
+                    stepsList.appendChild(stepItem);
+                }
+            } else {
+                document.getElementById("career-description").textContent = "Career information not available.";
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
+
